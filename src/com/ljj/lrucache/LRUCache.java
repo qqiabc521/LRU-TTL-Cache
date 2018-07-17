@@ -5,20 +5,21 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-public class LRUCache<K,V> {
+public class LRUCache<K, V> implements ILRUCache<K,V> {
 
     private int capacity;
-    private HashMap<K,Node> map = new HashMap<K, Node>();
+    private HashMap<K, Node> map = new HashMap<>();
     private Node head;
     private Node end;
 
-    public LRUCache(int capacity){
+    public LRUCache(int capacity) {
         this.capacity = capacity;
     }
 
-    public V get(K key){
-        if(map.containsKey(key)){
-            Node<K,V> n = map.get(key);
+    @Override
+    public V get(K key) {
+        if (map.containsKey(key)) {
+            Node<K, V> n = map.get(key);
             remove(n);
             setEnd(n);
             return n.value;
@@ -26,70 +27,79 @@ public class LRUCache<K,V> {
         return null;
     }
 
-    public void put(K key,V value){
-        if(map.containsKey(key)){
+    @Override
+    public void put(K key, V value) {
+        if (map.containsKey(key)) {
             Node n = map.get(key);
             n.value = value;
 
-            if(n != end) {
+            if (n != end) {
                 remove(n);
                 setEnd(n);
             }
-        }else{
-            Node create = new Node(key,value);
-            map.put(key,create);
+        } else {
+            Node create = new Node(key, value);
+            map.put(key, create);
             setEnd(create);
 
-            if(capacity < map.size()){
+            if (capacity < map.size()) {
                 map.remove(head.key);
                 remove(head);
             }
         }
     }
 
-    public void remove(K key){
-        if(map.containsKey(key)){
+    @Override
+    public V remove(K key) {
+        if (map.containsKey(key)) {
             Node n = map.remove(key);
             remove(n);
+            return (V) n.value;
         }
+        return null;
     }
 
-    private void remove(Node node){
-        if(node.pre != null){
+    @Override
+    public int size() {
+        return map.size();
+    }
+
+    private void remove(Node node) {
+        if (node.pre != null) {
             node.pre.next = node.next;
-        }else{
+        } else {
             head = node.next;
         }
 
-        if(node.next != null){
+        if (node.next != null) {
             node.next.pre = node.pre;
-        }else{
+        } else {
             end = node.pre;
         }
     }
 
-    private void setHead(Node node){
+    private void setHead(Node node) {
         node.next = head;
         node.pre = null;
 
-        if(head != null){
+        if (head != null) {
             head.pre = node;
         }
 
         head = node;
 
-        if(end == null){
+        if (end == null) {
             end = head;
         }
     }
 
-    private void setEnd(Node node){
+    private void setEnd(Node node) {
         node.pre = end;
         node.next = null;
 
-        if(end != null){
+        if (end != null) {
             end.next = node;
-        }else{
+        } else {
             end = node;
             head = end;
         }
@@ -103,17 +113,17 @@ public class LRUCache<K,V> {
 
         sb.append("link:").append("\n");
         Node tempHead = head;
-        while (tempHead != null){
+        while (tempHead != null) {
             sb.append(tempHead.key).append(":").append(tempHead.value).append("; ");
             tempHead = tempHead.next;
         }
         sb.append("\n");
 
         sb.append("map:").append("\n");
-        Set<Map.Entry<K,Node>> set = map.entrySet();
-        Iterator<Map.Entry<K,Node>> iterator = set.iterator();
-        while (iterator.hasNext()){
-            Node<K,V> node = iterator.next().getValue();
+        Set<Map.Entry<K, Node>> set = map.entrySet();
+        Iterator<Map.Entry<K, Node>> iterator = set.iterator();
+        while (iterator.hasNext()) {
+            Node<K, V> node = iterator.next().getValue();
             sb.append(node.key).append(":").append(node.value).append("; ");
         }
 
@@ -122,19 +132,19 @@ public class LRUCache<K,V> {
         return sb.toString();
     }
 
-    private class Node<K,V>{
+    private class Node<K, V> {
         private K key;
         private V value;
         private Node pre;
         private Node next;
 
-        public Node(K key,V value){
+        public Node(K key, V value) {
             this.key = key;
             this.value = value;
         }
 
-        public String toString(){
-            return key +":"+  value;
+        public String toString() {
+            return key + ":" + value;
         }
     }
 }

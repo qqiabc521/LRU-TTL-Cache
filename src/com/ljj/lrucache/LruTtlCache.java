@@ -1,18 +1,16 @@
 package com.ljj.lrucache;
 
-import java.text.DecimalFormat;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
-public class LRUTTLCache<K, V> implements ILRUCache<K, V> {
-    private static long period = -1;
-
+public class LruTtlCache<K, V> implements ILruCache<K, V> {
+    private long period = -1;
     private int capacity;
     private LinkedHashMap<K, TimeNode> map;
 
-    public LRUTTLCache(int capacity, long period) {
+    public LruTtlCache(int capacity, long period) {
         if(period <= 0){
             throw new RuntimeException("The period cannot be less than zero");
         }

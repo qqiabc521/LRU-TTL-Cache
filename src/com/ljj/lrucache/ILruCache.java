@@ -1,6 +1,6 @@
 package com.ljj.lrucache;
 
-public interface ILRUCache<K,V> {
+public interface ILruCache<K,V> {
 
     V get(K key);
 

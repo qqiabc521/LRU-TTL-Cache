@@ -5,14 +5,14 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-public class LRUCache<K, V> implements ILRUCache<K,V> {
+public class LruCache<K, V> implements ILruCache<K,V> {
 
     private int capacity;
     private HashMap<K, Node> map = new HashMap<>();
     private Node head;
     private Node end;
 
-    public LRUCache(int capacity) {
+    public LruCache(int capacity) {
         this.capacity = capacity;
     }
 

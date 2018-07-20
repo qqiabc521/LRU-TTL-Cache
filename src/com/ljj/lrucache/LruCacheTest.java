@@ -6,14 +6,14 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-public class LRUCacheTest {
+public class LruCacheTest {
 
     private static CountDownLatch main = new CountDownLatch(1);
 
     public static void main(String[] args) {
-//        ILRUCache<Integer,String> lruCache = new LRUCache<>(10);
-//        ILRUCache<Integer,String> lruCache = new LRULinkCache<>(10);
-        ILRUCache<Integer, String> lruCache = new LRUTTLCache<>(10, 10 * 1000L);
+//        ILruCache<Integer,String> lruCache = new LruCache<>(10);
+//        ILruCache<Integer,String> lruCache = new LruLinkCache<>(10);
+        ILruCache<Integer, String> lruCache = new LruTtlCache<>(10, 10 * 1000L);
 
         for (int i = 1; i <= 5; i++) {
             lruCache.put(i, String.valueOf(i));
@@ -34,10 +34,10 @@ public class LRUCacheTest {
 
     private static class AddTask implements Runnable{
 
-        private ILRUCache<Integer, String> lruCache;
+        private ILruCache<Integer, String> lruCache;
         private Random random = new Random();
 
-        public AddTask(ILRUCache<Integer, String> lruCache ){
+        public AddTask(ILruCache<Integer, String> lruCache ){
             this.lruCache = lruCache;
         }
 
@@ -60,10 +60,10 @@ public class LRUCacheTest {
 
     private static class GetTask implements Runnable{
 
-        private ILRUCache<Integer, String> lruCache;
+        private ILruCache<Integer, String> lruCache;
         private Random random = new Random();
 
-        public GetTask(ILRUCache<Integer, String> lruCache ){
+        public GetTask(ILruCache<Integer, String> lruCache ){
             this.lruCache = lruCache;
         }
 
@@ -83,7 +83,7 @@ public class LRUCacheTest {
         }
     }
 
-    private static void println(String tag, ILRUCache lruCache) {
+    private static void println(String tag, ILruCache lruCache) {
         System.out.println("================ " + tag + " =====================");
         System.out.println(lruCache.toString());
     }

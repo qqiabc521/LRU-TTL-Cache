@@ -2,12 +2,12 @@ package com.ljj.lrucache;
 
 import java.util.*;
 
-public class LRULinkCache<K, V> implements ILRUCache<K, V> {
+public class LruLinkCache<K, V> implements ILruCache<K, V> {
 
     private int capacity;
     private LinkedHashMap<K, V> map;
 
-    public LRULinkCache(int capacity) {
+    public LruLinkCache(int capacity) {
         this.capacity = capacity;
         map = new LinkedHashMap<>(10, 0.75f, true);
     }
